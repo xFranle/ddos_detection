@@ -15,7 +15,7 @@ def enviar_alerta_email(mensaje):
     """
     Envía una alerta por correo electrónico.
     
-    :parametro mensaje: Mensaje de la alerta.
+    :param mensaje: Mensaje de la alerta.
     """
     # Obtener credenciales y configuración de las variables de entorno
     servidor_smtp = os.environ.get('SERVIDOR_SMTP')
@@ -47,16 +47,18 @@ def bloquear_ip_maliciosa(ip):
     """
     Bloquea una dirección IP maliciosa en el firewall.
     
-    :parametro ip: Dirección IP maliciosa a bloquear.
+    :param ip: Dirección IP maliciosa a bloquear.
     """
     try:
         # Obtener contraseña SSH de la variable de entorno
         contraseña_ssh = os.environ.get('CONTRASEÑA_SSH')
-        
+        usuario_ssh = os.environ.get('USUARIO_SSH')
+        host_ssh = os.environ.get('HOST_SSH')
+
         # Configurar conexión SSH al firewall
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname='firewall.example.com', username='tu_usuario', password=contraseña_ssh)
+        ssh_client.connect(hostname=host_ssh, username=usuario_ssh, password=contraseña_ssh)
 
         # Ejecutar comando para agregar regla de bloqueo en el firewall
         comando = f"firewall-cmd --add-rich-rule='rule family=ipv4 source address={ip} drop'"
